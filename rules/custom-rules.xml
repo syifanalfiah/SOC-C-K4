@@ -1,0 +1,105 @@
+<!--
+  Custom Wazuh Rules
+  Letakkan di: /var/ossec/etc/rules/custom-rules.xml (di Manager VPS)
+  
+  Rules tambahan untuk demo presentasi
+-->
+
+<group name="custom,attack_demo,">
+
+  <!-- ========== BRUTE FORCE CUSTOM ========== -->
+
+  <!-- Alert khusus: 5 failed SSH login dalam 2 menit -->
+  <rule id="100001" level="10" frequency="5" timeframe="120">
+    <if_matched_sid>5710</if_matched_sid>
+    <description>[DEMO] SSH Brute Force terdeteksi - 5+ failed login dalam 2 menit</description>
+    <group>authentication_failures,brute_force,</group>
+  </rule>
+
+  <!-- Alert khusus: 10 failed SSH login (level lebih tinggi) -->
+  <rule id="100002" level="13" frequency="10" timeframe="120">
+    <if_matched_sid>5710</if_matched_sid>
+    <description>[DEMO] CRITICAL: Massive SSH Brute Force - 10+ failed login attempts</description>
+    <group>authentication_failures,brute_force,</group>
+  </rule>
+
+  <!-- ========== WEB ATTACK CUSTOM ========== -->
+
+  <!-- Deteksi SQL Injection di URL -->
+  <rule id="100010" level="10">
+    <if_group>web|accesslog</if_group>
+    <url>select|union|insert|update|delete|drop|concat|char|0x</url>
+    <description>[DEMO] SQL Injection terdeteksi di web request</description>
+    <group>web,attack,sql_injection,</group>
+  </rule>
+
+  <!-- Deteksi XSS di URL -->
+  <rule id="100011" level="10">
+    <if_group>web|accesslog</if_group>
+    <url>script|alert|onerror|onload|javascript</url>
+    <description>[DEMO] XSS (Cross-Site Scripting) terdeteksi di web request</description>
+    <group>web,attack,xss,</group>
+  </rule>
+
+  <!-- Deteksi Directory Traversal -->
+  <rule id="100012" level="10">
+    <if_group>web|accesslog</if_group>
+    <url>../|..\|/etc/passwd|/etc/shadow</url>
+    <description>[DEMO] Directory Traversal terdeteksi - percobaan akses file sistem</description>
+    <group>web,attack,path_traversal,</group>
+  </rule>
+
+  <!-- ========== FILE INTEGRITY CUSTOM ========== -->
+
+  <!-- Alert khusus ketika file di /etc diubah -->
+  <rule id="100020" level="10">
+    <if_sid>550</if_sid>
+    <match>/etc/</match>
+    <description>[DEMO] File konfigurasi penting diubah di /etc/</description>
+    <group>syscheck,config_change,</group>
+  </rule>
+
+  <!-- Alert ketika file executable diubah -->
+  <rule id="100021" level="12">
+    <if_sid>550</if_sid>
+    <match>/usr/bin/|/usr/sbin/|/bin/|/sbin/</match>
+    <description>[DEMO] CRITICAL: File executable sistem dimodifikasi!</description>
+    <group>syscheck,binary_change,</group>
+  </rule>
+
+  <!-- ========== PRIVILEGE ESCALATION CUSTOM ========== -->
+
+  <!-- Alert multiple sudo failures -->
+  <rule id="100030" level="10" frequency="3" timeframe="120">
+    <if_matched_sid>5401</if_matched_sid>
+    <description>[DEMO] Privilege Escalation attempt - multiple sudo failures</description>
+    <group>authentication_failures,privilege_escalation,</group>
+  </rule>
+
+  <!-- Deteksi user baru dengan UID 0 (root equivalent) -->
+  <rule id="100031" level="14">
+    <if_sid>5901</if_sid>
+    <match>uid=0</match>
+    <description>[DEMO] CRITICAL: User baru dibuat dengan root privileges (UID 0)!</description>
+    <group>adduser,privilege_escalation,</group>
+  </rule>
+
+  <!-- ========== SUSPICIOUS ACTIVITY ========== -->
+
+  <!-- Deteksi netcat listener (potential backdoor) -->
+  <rule id="100040" level="12">
+    <if_group>syslog</if_group>
+    <match>nc -l|ncat -l|netcat -l</match>
+    <description>[DEMO] Suspicious: Netcat listener detected (potential backdoor)</description>
+    <group>suspicious_activity,backdoor,</group>
+  </rule>
+
+  <!-- Deteksi reverse shell attempt -->
+  <rule id="100041" level="14">
+    <if_group>syslog</if_group>
+    <match>bash -i >& /dev/tcp|nc -e /bin|python -c 'import socket</match>
+    <description>[DEMO] CRITICAL: Reverse shell attempt detected!</description>
+    <group>suspicious_activity,reverse_shell,</group>
+  </rule>
+
+</group>
