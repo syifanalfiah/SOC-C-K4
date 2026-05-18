@@ -1078,4 +1078,4 @@ Setiap alert di Wazuh juga dipetakan ke standar compliance internasional:
 ---
 
 
-> **PERINGATAN:** Semua simulasi ini dilakukan **hanya pada sistem milik sendiri** dalam lingkungan lab tertutup. **Jangan** jalankan pada sistem yang bukan milik kamu.
+> **NOTES:** Semua simulasi ini dilakukan **hanya pada sistem milik sendiri** dalam lingkungan lab tertutup.
