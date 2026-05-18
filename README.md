@@ -1,4 +1,4 @@
-# Dokumentasi Wazuh SIEM — MIKS-C-K4
+# Wazuh SIEM - MIKS-C-K4
 
 > **Kelompok:** MIKS-C-K4  
 > **Mata Kuliah:** Manajemen Insiden Keamanam Siber
