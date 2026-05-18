@@ -1,4 +1,4 @@
-# Wazuh SIEM - MIKS-C-K4
+# MIKS-C-K4
 
 > **Kelompok:** MIKS-C-K4  
 > **Mata Kuliah:** Manajemen Insiden Keamanam Siber
@@ -934,7 +934,7 @@ sudo bash scripts/attack-ddos.sh
 ```
 Security Events → filter:
 rule.groups: attack OR rule.groups: ddos
-agent.name: <nama_agent>
+agent.name: DESKTOP-8EBI1VU
 ```
 
 ---
