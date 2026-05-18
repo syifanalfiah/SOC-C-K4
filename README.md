@@ -330,7 +330,7 @@ crontab -l
 
 ---
 
-## 📊 Status Sistem Saat Ini
+## Status Sistem Saat Ini
 
 | Komponen | Status |
 |----------|--------|
@@ -346,7 +346,7 @@ crontab -l
 
 ---
 
-## 📚 Dokumentasi Lengkap
+##  Dokumentasi Lengkap
 
 | File | Isi |
 |------|-----|
@@ -412,7 +412,7 @@ Metode ketiga menginject entri log autentikasi langsung ke `/var/log/auth.log` d
 
 ### Hasil Deteksi di Wazuh Dashboard
 
-![bruteforce] (Documentation/111.jpeg)
+![bruteforce](Documentation/bruteforce.jpeg)
 
 > Keterangan: Threat Hunting Dashboard menampilkan 943 hits dari agent `kworung`. Setiap baris menunjukkan event dengan `rule.id: 5710` (SSH attempt to login using non-existent user) dengan rule level 5, timestamped pada May 18, 2026 pukul 23:38.
 
@@ -480,12 +480,12 @@ done
 
 ### Keluaran Eksekusi Script
 
-![malware] (Documentation/malware.jpeg)
+![malware](Documentation/malware.jpeg)
 > Keterangan: Output terminal saat `bash attack-malware.sh` dijalankan. Menampilkan empat langkah simulasi (EICAR file creation, suspicious files, syslog injection, crypto miner simulation) yang semuanya selesai dengan status [DONE].
 
 ### Hasil Deteksi di Wazuh Dashboard
 
-![malware] (Documentation/malwareout.jpeg)
+![malware](Documentation/malwareout.jpeg)
 > Keterangan: Threat Hunting Dashboard menampilkan 34 hits pada rentang waktu May 18–19, 2026. Alert dari beberapa agent (Ascala, DESKTOP-8EBI1VU, kworung) dengan rule level 7 dan rule ID 510. Deskripsi meliputi "Trojaned version of file detected", "NTFS Alternate data stream found", dan "Process hidden from kill command" — semua termasuk kategori host-based anomaly detection.
 
 Filter dashboard yang digunakan:
@@ -551,7 +551,7 @@ curl "http://localhost/shell?input=\$(cat /etc/shadow)"
 
 ### Keluaran Eksekusi Script
 
-![sql](sql.jpeg)
+![sql](Documentation/sql.jpeg)
 > Keterangan: Output terminal menampilkan eksekusi `bash attack-web.sh localhost`. Terlihat daftar payload SQL Injection yang dikirimkan ke `http://localhost`, diikuti XSS payload. Script melaporkan "10 SQL injection attempts sent" dan dua XSS attempt yang terlihat di output.
 
 ### Rule yang Terpicu
@@ -563,7 +563,7 @@ curl "http://localhost/shell?input=\$(cat /etc/shadow)"
 | 31105 | Directory traversal attempt | 6 |
 | 31110 | Multiple web attack patterns | 10 |
 
-![sqlout](sqlout.jpeg)
+![sql](Documentation/sqlout.jpeg)
 ---
 
 
@@ -595,12 +595,12 @@ Script ini menyimulasikan 20 iterasi yang masing-masing menginjeksikan dua entri
 
 Entri log menggunakan format syslog standar dengan field `uid=1000 euid=0`, yang merupakan indikator bahwa user non-root mencoba mengeksekusi perintah dengan privilege root.
 
-![alt text](priv.jpeg)
+![alt text](Documentation/priv.jpeg)
 > Keterangan: Output terminal menampilkan eksekusi loop privilege escalation. Field `logname=hacker uid=1000 euid=0` terlihat jelas pada output, menunjukkan simulasi upaya akses root oleh user biasa.
 
 ### Hasil Deteksi di Wazuh Dashboard
 
-![alt text](privout.jpeg) 
+![alt text](Documentation/privout.jpeg) 
 > Keterangan: Wazuh Dashboard menampilkan serangkaian alert dengan rule level 9 dan deskripsi "User missed the password to change UID to root" dari agent `kworung`. Field `data.srcuser: hacker` dan `data.dstuser: root` terlihat pada detail event. Nilai `rule.firedtimes` yang terus meningkat (36, 37, 38, 39, 40) menunjukkan bahwa Wazuh melacak frekuensi kejadian secara kumulatif.
 
 Filter dashboard yang digunakan:
@@ -694,7 +694,7 @@ chmod +x /tmp/fim-test/keylogger.py
 
 ### Hasil Deteksi di Wazuh Dashboard
 
-![alt text](fileout.jpeg) 
+![alt text](Documentation/fileout.jpeg) 
 > Keterangan: Wazuh FIM Dashboard menampilkan daftar perubahan file dari agent `DESKTOP-8EBI1VU`. Field `syscheck.path` menunjukkan file-file yang berubah seperti `/tmp/fim-test/keylogger.py`, `/tmp/fim-test/backdoor.sh`, `/tmp/fim-test/aws-credentials.txt`, dan `/etc/hosts`. Kolom `syscheck.event` memperlihatkan jenis perubahan: `modified`, `deleted`, `added`. Rule ID yang terpicu antara lain 550 (integrity checksum changed), 553 (file deleted), dan 554 (file added).
 
 Filter dashboard yang digunakan:
@@ -721,11 +721,11 @@ Wazuh mengintegrasikan API VirusTotal untuk melakukan pemeriksaan hash file terh
 
 ### Hasil Deteksi di Wazuh Dashboard
 
-![alt text](virtout.jpeg)
+![alt text](Documentation/virtout.jpeg)
 
 > Keterangan: Threat Hunting Dashboard menampilkan alert VirusTotal dari agent `kworung`. Baris-baris dengan rule ID `87104` menampilkan deskripsi seperti "VirusTotal: Alert - /usr/bin/topsysproc" dan "VirusTotal: Alert - /usr/bin/priclass.d" dengan rule level 3. Baris dengan rule ID `87103` menampilkan "VirusTotal: Alert - No records in VirusTotal" yang mengindikasikan file tidak ada dalam database VirusTotal (potensi custom malware atau file baru yang belum terindeks).
 
-![alt text](tambahan.jpeg)
+![alt text](Documentation/tambahan.jpeg)
 > Keterangan: Tampilan halaman 63 dari hasil Threat Hunting (total 943 hits). Menampilkan alert `rule.id: 19009` dengan deskripsi "System audit for Unix based systems" dari agent `kworung` pada May 17, 2026, serta alert `rule.id: 501` "New wazuh agent connected" yang menunjukkan koneksi agent baru ke Manager.
 
 ### Interpretasi Hasil VirusTotal
