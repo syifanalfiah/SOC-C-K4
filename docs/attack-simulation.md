@@ -15,6 +15,7 @@ Dokumen ini berisi skenario simulasi serangan yang akan dijalankan pada masing-m
 | 3 | File Integrity Monitoring (FIM) | Agent 3 | 550-554 | 5-7 |
 | 4 | Rootkit Detection | Agent 3 | 510-514 | 7-12 |
 | 5 | Privilege Escalation (sudo abuse) | Agent 1 | 5401-5404 | 5-10 |
+| 6 | DDoS Attack | Agent 3 | 1002, 20101 | 6-10 |
 
 ---
 
