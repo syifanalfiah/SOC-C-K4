@@ -213,6 +213,9 @@ Buka `https://70.153.19.42` → klik **Advanced** → **Proceed** → login deng
 ![System Active](Documentation/system-active.png)
 *Status service Wazuh Manager, Indexer, dan Dashboard aktif*
 
+![Disk Usage](Documentation/space.png)
+*Disk usage Wazuh Manager - 25% terpakai dari 29GB, kondisi aman*
+
 ---
 
 ## Setup Wazuh Agent (Laptop)
