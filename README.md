@@ -369,9 +369,6 @@ sudo cat /var/ossec/etc/ossec.conf | grep api_key
 ![Overview Dashboard](Documentation/overview-dashboard.png)
 *Tampilan overview Wazuh Dashboard*
 
-![Overview Dashboard 2](Documentation/overview%20dashboard%20wazuh.png)
-*Security Events overview*
-
 ![Grafik Threat Hunting](Documentation/grafik%20Threat%20Hunting.png)
 *Grafik Threat Hunting — distribusi alert berdasarkan waktu dan rule*
 
