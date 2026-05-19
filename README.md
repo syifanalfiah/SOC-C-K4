@@ -450,6 +450,9 @@ bash scripts/attack-bruteforce.sh <IP_TARGET>
 ![Bruteforce Terminal](Documentation/bruteforce.jpeg)
 *Output terminal saat script brute force dijalankan — terlihat 943 hits terdeteksi di Threat Hunting Dashboard dengan rule ID 5710*
 
+![Bruteforce Hits](Documentation/tambahan.jpeg)
+*Threat Hunting menampilkan 943 hits dari agent kworung — rule ID 19009 "System audit for Unix based systems" - membuktikan volume serangan brute force yang tinggi*
+
 ### Cara Cek di Dashboard
 ```
 Security Events → filter:
@@ -1080,5 +1083,98 @@ Setiap alert di Wazuh juga dipetakan ke standar compliance internasional:
 
 ---
 
+## Logging Density & Distribution
+
+### Apa itu Logging Density?
+Logging density mengacu pada **seberapa padat/banyak log yang dihasilkan** 
+dalam periode waktu tertentu. Terlalu sedikit log = ancaman tidak terdeteksi. 
+Terlalu banyak log = sistem kewalahan & sulit dianalisis.
+
+Wazuh menangani ini dengan:
+- **Rule-based filtering** — hanya log yang cocok rule yang jadi alert
+- **Frequency threshold** — butuh X kejadian dalam Y menit baru trigger alert
+- **Level prioritization** — alert diurutkan level 1–15, admin fokus ke level tinggi
+
+---
+
+### Volume Alert yang Dihasilkan
+
+| Skenario | Total Alert | Durasi | Level Tertinggi |
+|----------|-------------|--------|-----------------|
+| SSH Brute Force | 943 hits | ~2 menit | 13 (Critical) |
+| Web Attack (SQLi/XSS) | 32 hits | ~1 menit | 10 (High) |
+| File Integrity (FIM) | Real-time | Instan | 12 (High) |
+| Rootkit & Malware | 34 hits | ~5 menit | 12 (High) |
+| VirusTotal Integration | 2 hits | ~60 detik | 12 (High) |
+| DDoS Attack | 30+ logs | ~10 detik | 8 (Medium) |
+| Privilege Escalation | 40+ hits | ~2 menit | 10 (High) |
+| Windows Service | Instan | ~5 detik | 12 (High) |
+
+---
+
+### Distribusi Log
+
+Log dari semua agent dikirim ke Manager secara **terpusat**, lalu disimpan 
+di OpenSearch dengan index harian.
+
+---
+
+Distribusi alert berdasarkan agent:
+| Agent | OS | Kontribusi Alert |
+|-------|-----|-----------------|
+| kworung | macOS | Brute Force, Privilege Escalation |
+| Ascala/DESKTOP | Windows | Web Attack, Suspicious Service |
+| DESKTOP-8EBI1VU | Kali Linux | FIM, Rootkit, Malware, DDoS |
+
+---
+
+### Bagaimana Wazuh Mencegah Log Overload?
+
+**1. Frequency Threshold (Custom Rules)**
+```xml
+<!-- Hanya alert setelah 10 kegagalan dalam 2 menit -->
+<rule id="100002" level="13" frequency="10" timeframe="120">
+  <if_matched_sid>5710</if_matched_sid>
+</rule>
+```
+Tanpa ini, 943 SSH failed login = 943 alert individual yang membanjiri dashboard.
+Dengan ini = 1 alert "Massive Brute Force" yang actionable.
+
+**2. Level Prioritization**
+Admin cukup fokus ke level ≥ 10 untuk ancaman serius:
+- Level 1–6 → Info/Low → diabaikan saat investigasi
+- Level 7–9 → Medium → dipantau
+- Level 10–12 → High → segera ditangani
+- Level 13–15 → Critical → respons instan
+
+**3. Index Rotation**
+Alert disimpan per hari — mencegah satu index membengkak dan 
+mempercepat query saat investigasi insiden.
+
+**4. Real-time vs Scheduled Scan**
+- FIM realtime → perubahan file langsung alert (tidak nunggu scan)
+- Rootcheck scheduled → scan tiap 2 jam, tidak terus-menerus
+- SCA scheduled → audit konfigurasi periodik
+
+---
+
+### Grafik Distribusi Alert
+
+Distribusi alert dapat dilihat di Wazuh Dashboard:
+- **Threat Hunting** → grafik timestamp per 30 menit
+- **Security Events** → breakdown per rule, agent, level
+- **Compliance** → distribusi berdasarkan standar (GDPR, HIPAA, NIST, PCI DSS)
+
+![Threat Hunting Spike](Documentation/grafik%20Threat%20Hunting.png)
+*Grafik Threat Hunting — spike log terlihat jelas saat simulasi serangan dijalankan*
+
+![Overview Dashboard](Documentation/overview-dashboard.png)
+*Overview Dashboard — distribusi alert dari 3 agent (macOS, Windows, Kali Linux)*
+
+![MITRE Distribution](Documentation/grafik%20mitre%20att%26ck.png)
+*Distribusi serangan berdasarkan MITRE ATT&CK — log terdistribusi ke berbagai teknik serangan*
+
+Spike traffic terlihat jelas di grafik saat simulasi serangan dijalankan,
+membuktikan Wazuh mampu mendeteksi anomali pola log secara real-time.
 
 > **NOTES:** Semua simulasi ini dilakukan **hanya pada sistem milik sendiri** dalam lingkungan lab tertutup.
