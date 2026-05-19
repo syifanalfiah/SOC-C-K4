@@ -915,7 +915,19 @@ done
 | 1002 | Unknown/anomalous system event | 6 |
 | 20101 | High traffic anomaly detected | 8 |
 
-> Deteksi DDoS lewat custom rules tidak ada secara spesifik - alert yang muncul mayoritas berasal dari rule bawaan Wazuh level medium (6–8) via log injection `logger`.
+### Mengapa Level DDoS Relatif Rendah?
+
+Wazuh adalah **host-based IDS (HIDS)** yang mendeteksi ancaman dari log sistem,
+bukan dari network traffic secara langsung. Akibatnya:
+
+- `hping3` flood packet **tidak otomatis terdeteksi** sebagai DDoS
+- Alert yang muncul (level 6–8) berasal dari **log injection manual** via `logger`
+- Untuk deteksi DDoS level tinggi, diperlukan integrasi dengan **network-based IDS**
+  seperti Suricata atau Snort yang dapat menganalisis traffic secara real-time
+
+> Meski demikian, simulasi ini berhasil membuktikan bahwa Wazuh mampu mendeteksi
+> **anomali log** yang mengindikasikan aktivitas DDoS, dan menghasilkan alert
+> yang dapat diinvestigasi oleh admin keamanan.
 
 ### Cara Jalankan
 ```bash
