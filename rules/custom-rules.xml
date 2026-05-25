@@ -3,6 +3,9 @@
   Letakkan di: /var/ossec/etc/rules/custom-rules.xml (di Manager VPS)
   
   Rules tambahan untuk demo presentasi
+  
+  UPDATE: Ditambahkan rules SOAR DDoS (100050-100055)
+  untuk automated detection & mitigation DDoS attacks
 -->
 
 <group name="custom,attack_demo,">
@@ -100,6 +103,92 @@
     <match>bash -i >& /dev/tcp|nc -e /bin|python -c 'import socket</match>
     <description>[DEMO] CRITICAL: Reverse shell attempt detected!</description>
     <group>suspicious_activity,reverse_shell,</group>
+  </rule>
+
+  <!-- ================================================================ -->
+  <!--          SOAR - DDoS DETECTION & AUTOMATED RESPONSE              -->
+  <!--                                                                  -->
+  <!--  Rules berikut adalah tambahan untuk Group Task #1:              -->
+  <!--  "Incorporate SOAR capabilities to enable automated detection    -->
+  <!--   and mitigation of DDoS attack vectors"                         -->
+  <!--                                                                  -->
+  <!--  Rule ID: 100050 - 100055                                        -->
+  <!--  Level 10-14 agar bisa trigger Active Response (SOAR)            -->
+  <!-- ================================================================ -->
+
+  <!-- Base Rules for DDoS detection (level low, used to count frequency) -->
+  <rule id="100060" level="3">
+    <if_group>syslog</if_group>
+    <match>SYN flood|syn_flood|SYN_RECV</match>
+    <description>SYN flood event base matching</description>
+    <group>ddos_base,</group>
+  </rule>
+
+  <rule id="100061" level="3">
+    <if_group>web|accesslog|syslog</if_group>
+    <match>flood|FLOOD|HTTP flood|connection flood</match>
+    <description>HTTP flood event base matching</description>
+    <group>ddos_base,</group>
+  </rule>
+
+  <rule id="100062" level="3">
+    <if_group>syslog</if_group>
+    <match>UDP flood|udp_flood|UDP_FLOOD</match>
+    <description>UDP flood event base matching</description>
+    <group>ddos_base,</group>
+  </rule>
+
+  <rule id="100063" level="3">
+    <if_group>syslog</if_group>
+    <match>POSSIBLE DDoS|possible ddos|DDoS ATTACK|HIGH TRAFFIC ANOMALY</match>
+    <description>Connection exhaustion event base matching</description>
+    <group>ddos_base,</group>
+  </rule>
+
+  <rule id="100064" level="3">
+    <if_group>syslog</if_group>
+    <match>ICMP flood|icmp_flood|ping flood|PING_FLOOD</match>
+    <description>ICMP flood event base matching</description>
+    <group>ddos_base,</group>
+  </rule>
+
+  <!-- DDoS Frequency-based Rules (Level 10-14, triggers Active Response & SOAR) -->
+  <rule id="100050" level="10" frequency="8" timeframe="60">
+    <if_matched_sid>100060</if_matched_sid>
+    <description>[SOAR-DDoS] SYN Flood terdeteksi - 8+ events dalam 60 detik</description>
+    <group>ddos,attack,soar,synflood,</group>
+  </rule>
+
+  <rule id="100051" level="10" frequency="15" timeframe="30">
+    <if_matched_sid>100061</if_matched_sid>
+    <description>[SOAR-DDoS] HTTP Flood terdeteksi - 15+ requests dalam 30 detik</description>
+    <group>ddos,attack,soar,httpflood,</group>
+  </rule>
+
+  <rule id="100052" level="10" frequency="8" timeframe="60">
+    <if_matched_sid>100062</if_matched_sid>
+    <description>[SOAR-DDoS] UDP Flood terdeteksi - 8+ events dalam 60 detik</description>
+    <group>ddos,attack,soar,udpflood,</group>
+  </rule>
+
+  <rule id="100053" level="10" frequency="10" timeframe="60">
+    <if_matched_sid>100063</if_matched_sid>
+    <description>[SOAR-DDoS] Connection Exhaustion / DDoS Pattern terdeteksi</description>
+    <group>ddos,attack,soar,connection_exhaustion,</group>
+  </rule>
+
+  <rule id="100054" level="10" frequency="8" timeframe="60">
+    <if_matched_sid>100064</if_matched_sid>
+    <description>[SOAR-DDoS] ICMP Flood (Ping Flood) terdeteksi</description>
+    <group>ddos,attack,soar,icmpflood,</group>
+  </rule>
+
+  <!-- DDoS: CRITICAL — multiple DDoS vectors detected (level tertinggi) -->
+  <!-- Trigger ketika SALAH SATU rule DDoS di atas sudah terpicu beberapa kali -->
+  <rule id="100055" level="14" frequency="5" timeframe="120">
+    <if_matched_group>ddos</if_matched_group>
+    <description>[SOAR-DDoS] CRITICAL: Massive DDoS Attack - multiple vectors detected! Auto-mitigation triggered.</description>
+    <group>ddos,attack,soar,critical,</group>
   </rule>
 
 </group>

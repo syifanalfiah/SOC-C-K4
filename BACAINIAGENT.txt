@@ -1,0 +1,100 @@
+================================================================================
+🚨 PETUNJUK SIMULASI DDOS & PENGUJIAN SOAR + THEHIVE (UNTUK AGENT / TIM) 🚨
+================================================================================
+
+Halo Tim / Agent,
+
+Sistem SOAR (Automated DDoS Mitigation) dan platform Incident Response (TheHive 5)
+telah berhasil dikonfigurasi dan dideploy pada Wazuh Manager VPS (70.153.19.42).
+
+Berikut adalah panduan lengkap langkah demi langkah untuk menjalankan pengujian di
+sisi Agent (laptop masing-masing) dan melakukan verifikasi hasil di dashboard.
+
+--------------------------------------------------------------------------------
+🌐 WEBSITE & DASHBOARD YANG BISA DIAKSES
+--------------------------------------------------------------------------------
+
+1. Landing Page Proyek (HTML):
+   👉 http://70.153.19.42/index.html (Port 80)
+   Menampilkan informasi lengkap arsitektur stack (Wazuh + SOAR + TheHive)
+   serta tautan cepat ke seluruh dashboard.
+
+2. Wazuh Dashboard (SIEM & SOAR):
+   👉 https://70.153.19.42:443 (Port 443)
+   Tempat memantau log keamanan, visualisasi grafik deteksi, dan status mitigasi.
+
+3. TheHive Dashboard (Incident Response & Case Management):
+   👉 http://70.153.19.42:9000 (Port 9000)
+   Tempat melihat alert otomatis yang dikirimkan oleh Wazuh setelah mendeteksi 
+   aktivitas DDoS, untuk diinvestigasi lebih lanjut dan di-convert menjadi Case.
+
+--------------------------------------------------------------------------------
+💻 TANGGUNG JAWAB & TUGAS AGENT (DI JALANKAN DI LAPTOP AGENT)
+--------------------------------------------------------------------------------
+
+### LANGKAH 1: Update Repositori Lokal
+Sebelum memulai simulasi, pastikan script di laptop kamu sudah yang terbaru:
+```bash
+git pull origin main
+```
+
+### LANGKAH 2: Jalankan Script Simulasi DDoS (SYN/HTTP/UDP/ICMP Flood)
+Gunakan terminal laptop kamu (memerlukan hak akses `sudo`) untuk mengeksekusi script:
+```bash
+sudo bash scripts/attack-ddos.sh
+```
+*Script ini akan memicu simulasi pengiriman paket traffic tinggi ke target VPS (70.153.19.42) untuk menguji kepekaan rules deteksi.*
+
+---
+
+--------------------------------------------------------------------------------
+📊 PARAMETER DETEKSI & ANGKA-ANGKA PENTING
+--------------------------------------------------------------------------------
+
+Berikut adalah daftar aturan (*Rules*) DDoS komposit baru yang akan terpicu ketika traffic abnormal terdeteksi di server:
+
+1. **Rule 100050 (SYN Flood) - Level 10**
+   * Pemicu: Terdeteksi minimal 8 kali upaya koneksi SYN (base rule 100060) dalam waktu 60 detik.
+2. **Rule 100051 (HTTP Flood) - Level 10**
+   * Pemicu: Terdeteksi minimal 15 requests HTTP (base rule 100061) dalam waktu 30 detik ke Apache.
+3. **Rule 100052 (UDP Flood) - Level 10**
+   * Pemicu: Terdeteksi minimal 8 kali aktivitas UDP traffic (base rule 100062) dalam waktu 60 detik.
+4. **Rule 100053 (Connection Exhaustion) - Level 10**
+   * Pemicu: Terdeteksi minimal 10 kali anomali traffic tinggi (base rule 100063) dalam waktu 60 detik.
+5. **Rule 100054 (ICMP Flood) - Level 10**
+   * Pemicu: Terdeteksi minimal 8 kali ping flood (base rule 100064) dalam waktu 60 detik.
+6. **Rule 100055 (CRITICAL Massive DDoS) - Level 14**
+   * Pemicu: Minimal 5 kali event DDoS dari aturan di atas terdeteksi dalam rentang waktu 120 detik.
+   * Efek: Memicu Active Response mitigasi tingkat tinggi (pemblokiran IP 30 menit).
+
+---
+
+--------------------------------------------------------------------------------
+📸 VERIFIKASI & SCREENSHOT UNTUK BUKTI TUGAS
+--------------------------------------------------------------------------------
+
+Setelah script simulasi selesai berjalan, segera lakukan verifikasi berikut untuk mengumpulkan bukti tugas kelompok:
+
+#### A. Verifikasi pada Landing Page & Wazuh Dashboard:
+1. Buka http://70.153.19.42/index.html dan pastikan semua navigasi berjalan baik. (Ambil screenshot sebagai bukti tampilan).
+2. Login ke Wazuh Dashboard (https://70.153.19.42) -> Masuk ke menu **Security Events** / **Threat Hunting**.
+3. Cari alert dengan memfilter: `rule.groups: soar` atau `rule.id: 100050` s/d `100055`.
+4. Ambil screenshot bukti deteksi serangan DDoS.
+5. Ambil screenshot log **Active Response** yang menunjukkan IP penyerang telah diblokir secara otomatis oleh sistem SOAR.
+
+#### B. Verifikasi pada TheHive Dashboard (Integrasi Baru):
+1. Buka http://70.153.19.42:9000.
+2. Login dengan akun:
+   * **Username:** `admin@thehive.local`
+   * **Password:** *(Tanyakan kepada admin server untuk password baru yang sudah diganti)*
+3. Masuk ke tab **Alerts** di sidebar kiri.
+4. Pastikan ada alert otomatis masuk dari Wazuh dengan format judul: `[Wazuh] [SOAR-DDoS] ...`.
+5. Klik pada salah satu alert tersebut untuk membuka detail log analisis. (Ambil screenshot bukti alert TheHive).
+6. Klik tombol **Merge into Case** untuk mengubah alert tersebut menjadi Case penanganan insiden. (Ambil screenshot Case tersebut).
+
+================================================================================
+💡 CATATAN TAMBAHAN:
+- Panduan arsitektur & troubleshooting SOAR: docs/setup-soar.md
+- Panduan instalasi dan operasional TheHive: docs/setup-thehive.md
+- Urutan pengerjaan komprehensif: URUTAN_PENGERJAAN.md
+================================================================================

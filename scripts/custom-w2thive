@@ -1,0 +1,27 @@
+#!/bin/sh
+# ================================================================
+# Wazuh → TheHive Integration Wrapper
+# ================================================================
+# Shell wrapper yang dipanggil oleh Wazuh integratord.
+# Memanggil custom-w2thive.py dengan Python internal Wazuh.
+#
+# Lokasi di server: /var/ossec/integrations/custom-w2thive
+# Permissions: chmod 755, chown root:wazuh
+# ================================================================
+
+WPYTHON_BIN="/var/ossec/framework/python/bin/python3"
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
+SCRIPT_PATH="${SCRIPT_DIR}/custom-w2thive.py"
+
+if [ ! -f "${WPYTHON_BIN}" ]; then
+    echo "$(date) | TheHive-Integration | ERROR | Python binary not found: ${WPYTHON_BIN}" >> /var/ossec/logs/integrations.log
+    exit 1
+fi
+
+if [ ! -f "${SCRIPT_PATH}" ]; then
+    echo "$(date) | TheHive-Integration | ERROR | Script not found: ${SCRIPT_PATH}" >> /var/ossec/logs/integrations.log
+    exit 1
+fi
+
+${WPYTHON_BIN} ${SCRIPT_PATH} "$@"
