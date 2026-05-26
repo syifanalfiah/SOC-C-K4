@@ -85,7 +85,7 @@ Setelah script simulasi selesai berjalan, segera lakukan verifikasi berikut untu
 #### B. Verifikasi pada TheHive Dashboard (Integrasi Baru):
 1. Buka http://70.153.19.42:9000.
 2. Login dengan akun:
-   * **Username:** `admin@thehive.local`
+   * **Username:** `analyst@thehive.local`
    * **Password:** *(Tanyakan kepada admin server untuk password baru yang sudah diganti)*
 3. Masuk ke tab **Alerts** di sidebar kiri.
 4. Pastikan ada alert otomatis masuk dari Wazuh dengan format judul: `[Wazuh] [SOAR-DDoS] ...`.
