@@ -130,7 +130,7 @@ xxxxxxxxxxxx   strangebee/thehive Up 2 minutes   0.0.0.0:9000->9000/tcp
 
 1. Buka browser: `http://70.153.19.42:9000`
 2. Login dengan default credentials:
-   - **Username:** `admin@thehive.local`
+   - **Username:** `analyst@thehive.local`
    - **Password:** `secret`
 3. **SEGERA ganti password!**
    - Klik profil (kanan atas) → Change Password
@@ -140,7 +140,7 @@ xxxxxxxxxxxx   strangebee/thehive Up 2 minutes   0.0.0.0:9000->9000/tcp
 ## Step 4: Buat API Key untuk Integrasi Wazuh
 
 1. Di TheHive, klik **⚙️ Admin** (sidebar) → **Users**
-2. Klik user `admin@thehive.local` (atau buat user khusus `wazuh-integration`)
+2. Klik user `analyst@thehive.local` (atau buat user khusus `wazuh-integration`)
 3. Scroll ke bagian **API Key**
 4. Klik **Create** / **Renew** API Key
 5. **Copy API Key** — simpan baik-baik! (dipakai di Step 5)
