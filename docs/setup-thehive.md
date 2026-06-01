@@ -371,6 +371,9 @@ sudo bash scripts/attack-ddos.sh
    - `[SOAR-DDoS] CRITICAL: Massive DDoS Attack`
 4. Klik alert → **Merge into Case** untuk mulai investigasi
 
+![TheHive Analyst Dashboard](../Documentation/thehive-analyst.png)
+*Tampilan dashboard alerts organisasi SOC di TheHive setelah integrasi berhasil.*
+
 ---
 
 ## Troubleshooting

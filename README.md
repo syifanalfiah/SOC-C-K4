@@ -5,7 +5,7 @@
 
 > **Kelompok:** SOC-C-K4
 > **Mata Kuliah:** Security Operation Center
-> **Tanggal Laporan:** Mei 2026
+> **Tanggal Laporan:** Juni 2026
 > **Platform:** Wazuh SIEM + SOAR + TheHive — Microsoft Azure
 > **Klasifikasi:** Internal / Confidential
 
@@ -121,6 +121,10 @@ Berdasarkan hasil simulasi, tiga rekomendasi utama yang perlu ditindaklanjuti ad
 | 17 Mei 2026, 21:22 | FIM mendeteksi perubahan `/tmp/fim-test/backdoor.sh` (realtime) | Rule 550 | 7 |
 | 17 Mei 2026, 21:40 | VirusTotal mendeteksi EICAR file — 61/66 engines | Rule 87105 | 12 |
 | 18 Mei 2026, 23:34 | Script `attack-service.bat` dijalankan di Windows | Rule 61138, 60154 | 5–12 |
+| 25 Mei 2026, 17:07 | Pembuatan user `analyst@thehive.local` di TheHive | Manajemen User | - |
+| 26 Mei 2026, 08:22 | Konfigurasi API Key TheHive di `ossec.conf` VPS | Integrasi SIEM | - |
+| 30 Mei 2026, 16:04 | Perbaikan hak akses & uji coba integrasi manual Wazuh ke TheHive | Rule 100050 | 10 |
+| 30 Mei 2026, 22:52 | Uji coba deteksi riil DDoS terintegrasi otomatis ke TheHive | Rule 100021, 100007 | 12 |
 
 ---
 
@@ -457,6 +461,10 @@ Setiap alert Wazuh secara otomatis dipetakan ke standar compliance berikut:
 **Gambar 10 — Custom Rules**
 ![Custom Rules](Documentation/rule.png)
 *Custom detection rules level 10–14 yang aktif di Wazuh Manager*
+
+**Gambar 11 — TheHive Incident Response (Analyst Dashboard)**
+![TheHive Analyst Dashboard](Documentation/thehive-analyst.png)
+*Dashboard Alerts di TheHive (Organisasi SOC) menampilkan alert DDoS yang berhasil diteruskan oleh Wazuh*
 
 ---
 
