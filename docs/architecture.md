@@ -119,10 +119,10 @@ STEP 6: SOC/Admin Merespon
 
 | Anggota | Peran | Tugas |
 |---------|-------|-------|
-| **Orang 1** | Manager Admin | Setup cloud (Azure for Students), install Manager, config rules |
-| **Orang 2** | Agent 1 + Attacker | Install agent di laptop, simulasi **Brute Force SSH** |
-| **Orang 3** | Agent 2 + Attacker | Install agent di laptop, simulasi **Web Attack (SQL Injection, XSS)** |
-| **Orang 4** | Agent 3 + Attacker | Install agent di laptop, simulasi **File Integrity Monitoring & Rootkit** |
+| **Syifa Nurul Alfiah** | Manager / SOC Analyst | Setup cloud (Azure for Students), install Manager, config rules, TheHive integration |
+| **Putri Joselina Silitonga** | Agent 1 / Attacker (macOS) | Install agent di laptop, simulasi **Brute Force SSH** & **Privilege Escalation** |
+| **Salsa Bil Ulla** | Agent 2 / Attacker (Windows) | Install agent di laptop, simulasi **Web Attack (SQL Injection, XSS)** & **Windows Service** |
+| **Revalina Erica Permatasari** | Agent 3 / Attacker (Kali Linux) | Install agent di laptop, simulasi **File Integrity Monitoring**, **Rootkit**, & **DDoS Attack (SOAR)** |
 
 > **Catatan**: Semua 4 laptop tetap bisa dipakai flexible. Manager di cloud, jadi siapapun bisa akses dashboard dari browser.
 

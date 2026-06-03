@@ -130,20 +130,32 @@ xxxxxxxxxxxx   strangebee/thehive Up 2 minutes   0.0.0.0:9000->9000/tcp
 
 1. Buka browser: `http://70.153.19.42:9000`
 2. Login dengan default credentials:
-   - **Username:** `analyst@thehive.local`
+   - **Username:** `admin@thehive.local`
    - **Password:** `secret`
 3. **SEGERA ganti password!**
    - Klik profil (kanan atas) → Change Password
 
 ---
 
-## Step 4: Buat API Key untuk Integrasi Wazuh
+## Step 4: Buat API Key & Konfigurasi Hak Akses Organisasi
 
-1. Di TheHive, klik **⚙️ Admin** (sidebar) → **Users**
-2. Klik user `analyst@thehive.local` (atau buat user khusus `wazuh-integration`)
-3. Scroll ke bagian **API Key**
-4. Klik **Create** / **Renew** API Key
-5. **Copy API Key** — simpan baik-baik! (dipakai di Step 5)
+> [!IMPORTANT]
+> TheHive 5 menggunakan model multi-organisasi yang ketat. Agar Wazuh dapat membuat alert di TheHive tanpa error **HTTP 403 Forbidden**, user yang digunakan (misalnya `analyst@thehive.local`) harus memiliki profil dengan hak akses tulis (`org-admin` atau `analyst`) di dalam organisasi operasional (misalnya organisasi **SOC**), dan organisasi tersebut harus diset sebagai **Default Organisation** untuk user tersebut.
+
+### Langkah-langkah Konfigurasi:
+
+1. **Login sebagai administrator (`admin@thehive.local`).**
+2. **Ubah User Profile & Hak Akses Organisasi:**
+   - Masuk ke **⚙️ Admin** (sidebar) → **Users**.
+   - Klik user `analyst@thehive.local` (atau buat user baru khusus integrasi).
+   - Di bawah **Organizations**, pastikan user tersebut tergabung dalam organisasi target (misalnya organisasi **SOC**).
+   - Ubah profil user tersebut di dalam organisasi **SOC** dari `readOnly` menjadi **`org-admin`** (atau profil lain yang memiliki izin `manageAlert/create` dan `manageAlert/update`).
+   - Ubah/set **Default Organisation** user tersebut menjadi **`SOC`** di halaman pengaturannya. Hal ini penting agar API key user tersebut otomatis mengarah ke konteks organisasi **SOC**, bukan organisasi administratif `admin`.
+3. **Generate API Key:**
+   - Masuk sebagai user `analyst@thehive.local`.
+   - Di bagian detail user, scroll ke bawah ke bagian **API Key**.
+   - Klik **Create / Renew** API Key.
+   - **Copy API Key** — simpan baik-baik! (dipakai di Step 6).
 
 ---
 

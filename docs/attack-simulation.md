@@ -409,9 +409,9 @@ rule.groups: "syscheck"
 
 | Waktu | Aktivitas | PIC |
 |-------|-----------|-----|
-| 0-5 min | Intro arsitektur & login dashboard | Orang 1 (Manager) |
-| 5-10 min | Demo Agent 1: SSH Brute Force | Orang 2 |
-| 10-15 min | Demo Agent 2: Web Attack (SQLi/XSS) | Orang 3 |
-| 15-20 min | Demo Agent 3: FIM & Rootkit | Orang 4 |
-| 20-25 min | Review semua alert di Dashboard | Orang 1 |
+| 0-5 min | Intro arsitektur & login dashboard | Syifa Nurul Alfiah (Manager) |
+| 5-10 min | Demo Agent 1: SSH Brute Force | Putri Joselina Silitonga |
+| 10-15 min | Demo Agent 2: Web Attack (SQLi/XSS) | Salsa Bil Ulla |
+| 15-20 min | Demo Agent 3: FIM & Rootkit | Revalina Erica Permatasari |
+| 20-25 min | Review semua alert di Dashboard & Integrasi SOAR + TheHive | Syifa Nurul Alfiah |
 | 25-30 min | Q&A & Kesimpulan | Semua |

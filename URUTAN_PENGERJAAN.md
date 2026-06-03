@@ -13,7 +13,7 @@ Jangan bingung dengan banyaknya file! Ikuti urutan langkah di bawah ini. Centang
 ---
 
 ### ✅ TAHAP 2: Menghubungkan Laptop ke Server (Setup Agent)
-*Status: **SEDANG BERJALAN** (1 agent Mac sudah terhubung)*
+*Status: **SUDAH SELESAI!*** 🎉 (Semua 3 agent (macOS, Windows, Kali Linux) sudah terhubung dan aktif)
 - **Tujuan:** Install Wazuh Agent di laptop masing-masing anggota tim.
 - **File panduan:** `docs/setup-agent.md`
 - **Cara cek agent aktif di Dashboard:**
@@ -46,8 +46,8 @@ Jangan bingung dengan banyaknya file! Ikuti urutan langkah di bawah ini. Centang
 
 ---
 
-### ⏳ TAHAP 5: SOAR — Automated DDoS Response ⭐⭐ WAJIB (Group Task #1 BARU)
-*Status: **FILE SUDAH SIAP, TINGGAL DEPLOY KE SERVER***
+### ✅ TAHAP 5: SOAR — Automated DDoS Response ⭐⭐ WAJIB (Group Task #1 BARU)
+*Status: **SUDAH SELESAI!*** 🎉 (Berhasil di-deploy ke server dan divalidasi dengan simulasi DDoS)
 
 > **Requirement:** *"Incorporate SOAR capabilities to enable the automated detection and mitigation of DDoS attack vectors"*
 
@@ -103,8 +103,8 @@ sudo tail -20 /var/ossec/logs/active-responses.log
 
 ---
 
-### ⏳ TAHAP 5.5: Integrasi TheHive — Incident Response ⭐⭐ (Tambahan SOAR)
-*Status: **FILE SUDAH SIAP, TINGGAL DEPLOY KE SERVER***
+### ✅ TAHAP 5.5: Integrasi TheHive — Incident Response ⭐⭐ (Tambahan SOAR)
+*Status: **SUDAH SELESAI!*** 🎉 (Berhasil di-deploy via Docker dan terintegrasi otomatis)
 
 > **Tujuan:** Menghubungkan Wazuh dengan TheHive agar setiap alert DDoS (dan alert lainnya) otomatis menjadi Alert/Case di TheHive untuk diinvestigasi.
 
